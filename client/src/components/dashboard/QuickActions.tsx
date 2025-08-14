@@ -1,44 +1,44 @@
 import React from 'react';
 import { Plus, Calendar, Lightbulb, FileText, BarChart3, Share2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 
 const QuickActions = () => {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
 
   const actions = [
     {
       icon: Plus,
       label: 'New Content Idea',
       description: 'Capture inspiration',
-      onClick: () => navigate('/ideation'),
+      onClick: () => setLocation('/ideation'),
       color: 'bg-sage',
     },
     {
       icon: Calendar,
       label: 'Schedule Content',
       description: 'Plan publication',
-      onClick: () => navigate('/calendar'),
+      onClick: () => setLocation('/calendar'),
       color: 'bg-warm-blue',
     },
     {
       icon: FileText,
       label: 'Create Brief',
       description: 'Start new project',
-      onClick: () => navigate('/strategy'),
+      onClick: () => setLocation('/strategy'),
       color: 'bg-dusty-purple',
     },
     {
       icon: BarChart3,
       label: 'View Analytics',
       description: 'Check performance',
-      onClick: () => navigate('/analytics'),
+      onClick: () => setLocation('/analytics'),
       color: 'bg-warm-amber',
     },
     {
       icon: Share2,
       label: 'Create Social Post',
       description: 'Share on social media',
-      onClick: () => navigate('/social'),
+      onClick: () => setLocation('/social'),
       color: 'bg-soft-emerald',
     },
   ];
@@ -74,7 +74,7 @@ const QuickActions = () => {
           >
             <div className="flex items-center space-x-3">
               <div className={`w-8 h-8 sm:w-10 sm:h-10 ${actions[4].color} rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-250`}>
-                <actions[4].icon className="w-5 h-5 text-white" />
+                {React.createElement(actions[4].icon, { className: "w-5 h-5 text-white" })}
               </div>
               <div>
                 <h3 className="text-sm sm:text-base font-medium text-neutral-900 mb-1">{actions[4].label}</h3>

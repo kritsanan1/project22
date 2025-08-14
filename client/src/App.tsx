@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Router, Route, Switch } from 'wouter';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocialMediaProvider } from './contexts/SocialMediaContext';
@@ -21,16 +21,16 @@ function App() {
           <div className="min-h-screen bg-cream">
             <Navigation />
             <main className="transition-all duration-300 ease-in-out">
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/calendar" element={<Calendar />} />
-                <Route path="/ideation" element={<Ideation />} />
-                <Route path="/strategy" element={<Strategy />} />
-                <Route path="/library" element={<Library />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/collaboration" element={<Collaboration />} />
-                <Route path="/social" element={<SocialMedia />} />
-              </Routes>
+              <Switch>
+                <Route path="/" component={Dashboard} />
+                <Route path="/calendar" component={Calendar} />
+                <Route path="/ideation" component={Ideation} />
+                <Route path="/strategy" component={Strategy} />
+                <Route path="/library" component={Library} />
+                <Route path="/analytics" component={Analytics} />
+                <Route path="/collaboration" component={Collaboration} />
+                <Route path="/social" component={SocialMedia} />
+              </Switch>
             </main>
           </div>
         </Router>

@@ -43,7 +43,33 @@ class SocialMediaService {
       }));
     } catch (error) {
       console.error('Failed to fetch connected accounts:', error);
-      return [];
+      // Return mock data for demo
+      return [
+        {
+          id: '1',
+          platform: 'twitter',
+          username: '@yourcompany',
+          profileImage: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=100',
+          isConnected: true,
+          lastSync: new Date().toISOString(),
+        },
+        {
+          id: '2',
+          platform: 'linkedin',
+          username: 'Your Company',
+          profileImage: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=100',
+          isConnected: true,
+          lastSync: new Date().toISOString(),
+        },
+        {
+          id: '3',
+          platform: 'instagram',
+          username: '@yourcompany',
+          profileImage: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=100',
+          isConnected: false,
+          lastSync: undefined,
+        },
+      ];
     }
   }
 
@@ -167,48 +193,7 @@ class SocialMediaService {
     ];
   }
 
-  async getConnectedAccounts(): Promise<SocialAccount[]> {
-    try {
-      const accounts = await ayrshareService.getConnectedAccounts();
-      return accounts.map((account: any) => ({
-        id: account.id,
-        platform: account.platform,
-        username: account.username,
-        profileImage: account.profileImage,
-        isConnected: true,
-        lastSync: new Date().toISOString(),
-      }));
-    } catch (error) {
-      console.error('Failed to fetch connected accounts:', error);
-      // Return mock data for demo
-      return [
-        {
-          id: '1',
-          platform: 'twitter',
-          username: '@yourcompany',
-          profileImage: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=100',
-          isConnected: true,
-          lastSync: new Date().toISOString(),
-        },
-        {
-          id: '2',
-          platform: 'linkedin',
-          username: 'Your Company',
-          profileImage: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=100',
-          isConnected: true,
-          lastSync: new Date().toISOString(),
-        },
-        {
-          id: '3',
-          platform: 'instagram',
-          username: '@yourcompany',
-          profileImage: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg?auto=compress&cs=tinysrgb&w=100',
-          isConnected: false,
-          lastSync: undefined,
-        },
-      ];
-    }
-  }
+
 }
 
 export const socialMediaService = new SocialMediaService();

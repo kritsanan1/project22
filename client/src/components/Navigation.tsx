@@ -13,11 +13,17 @@ import {
   Share2
 } from 'lucide-react';
 
+interface NavItem {
+  path: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+}
+
 const Navigation = () => {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { path: '/', icon: Home, label: 'Dashboard' },
     { path: '/calendar', icon: Calendar, label: 'Calendar' },
     { path: '/ideation', icon: Lightbulb, label: 'Ideation' },
@@ -29,10 +35,10 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-white/80 backdrop-blur-sm border-b border-neutral-200/50 sticky top-0 z-50">
+    <nav className="bg-white/80 backdrop-blur-sm border-b border-neutral-200/50 sticky top-0 z-50" data-testid="main-navigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2" data-testid="brand-logo">
             <div className="w-8 h-8 bg-sage rounded-xl flex items-center justify-center">
               <PenTool className="w-4 h-4 text-white" />
             </div>
@@ -40,7 +46,7 @@ const Navigation = () => {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-1">
+          <div className="hidden md:flex space-x-1" data-testid="desktop-navigation">
             {navItems.map(({ path, icon: Icon, label }) => (
               <Link
                 key={path}
@@ -50,6 +56,7 @@ const Navigation = () => {
                     ? 'bg-sage text-white shadow-sm'
                     : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                 }`}
+                data-testid={`nav-link-${label.toLowerCase()}`}
               >
                 <Icon className="w-4 h-4" />
                 <span className="hidden lg:inline">{label}</span>
@@ -62,6 +69,8 @@ const Navigation = () => {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-xl text-neutral-600 hover:text-sage hover:bg-sage/5 transition-all duration-250"
+              data-testid="mobile-menu-button"
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isMobileMenuOpen ? (
@@ -76,7 +85,7 @@ const Navigation = () => {
         
         {/* Mobile Navigation Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-sm">
+          <div className="md:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-sm" data-testid="mobile-navigation">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map(({ path, icon: Icon, label }) => (
                 <Link
@@ -88,6 +97,7 @@ const Navigation = () => {
                       ? 'bg-sage text-white shadow-sm'
                       : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
                   }`}
+                  data-testid={`mobile-nav-link-${label.toLowerCase()}`}
                 >
                   <Icon className="w-5 h-5" />
                   <span>{label}</span>

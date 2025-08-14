@@ -2,10 +2,18 @@ import React from 'react';
 import { Plus, Calendar, Lightbulb, FileText, BarChart3, Share2 } from 'lucide-react';
 import { useLocation } from 'wouter';
 
+interface QuickAction {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  description: string;
+  onClick: () => void;
+  color: string;
+}
+
 const QuickActions = () => {
   const [, setLocation] = useLocation();
 
-  const actions = [
+  const actions: QuickAction[] = [
     {
       icon: Plus,
       label: 'New Content Idea',
@@ -43,13 +51,13 @@ const QuickActions = () => {
     },
   ];
 
-  const handleActionClick = (action: any) => {
+  const handleActionClick = (action: QuickAction) => {
     console.log('Quick action clicked:', action.label);
     action.onClick();
   };
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-100">
-      <h2 className="text-base sm:text-lg font-semibold text-neutral-900 mb-4 sm:mb-6">Quick Actions</h2>
+    <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-100" data-testid="quick-actions-section">
+      <h2 className="text-base sm:text-lg font-semibold text-neutral-900 mb-4 sm:mb-6" data-testid="quick-actions-title">Quick Actions</h2>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {actions.slice(0, 4).map((action, index) => (
@@ -57,6 +65,7 @@ const QuickActions = () => {
             key={index}
             onClick={() => handleActionClick(action)}
             className="group p-3 sm:p-4 rounded-xl border border-neutral-200 hover:border-neutral-300 transition-all duration-250 text-left hover:shadow-soft"
+            data-testid={`quick-action-${action.label.toLowerCase().replace(/\s+/g, '-')}`}
           >
             <div className={`w-8 h-8 sm:w-10 sm:h-10 ${action.color} rounded-xl flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-105 transition-transform duration-250`}>
               <action.icon className="w-5 h-5 text-white" />
@@ -71,6 +80,7 @@ const QuickActions = () => {
           <button
             onClick={() => handleActionClick(actions[4])}
             className="group w-full p-3 sm:p-4 rounded-xl border border-neutral-200 hover:border-neutral-300 transition-all duration-250 text-left hover:shadow-soft"
+            data-testid={`quick-action-${actions[4].label.toLowerCase().replace(/\s+/g, '-')}`}
           >
             <div className="flex items-center space-x-3">
               <div className={`w-8 h-8 sm:w-10 sm:h-10 ${actions[4].color} rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-250`}>

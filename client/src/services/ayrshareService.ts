@@ -1,6 +1,6 @@
 class AyrshareService {
   private apiKey: string;
-  private baseUrl = 'https://app.ayrshare.com/api';
+  private baseUrl = 'https://api.ayrshare.com/api';
 
   constructor() {
     this.apiKey = import.meta.env.VITE_AYRSHARE_API_KEY || '';
@@ -33,6 +33,7 @@ class AyrshareService {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.apiKey}`,
+          'Accept-Encoding': 'deflate, gzip, br',
           ...options.headers,
         },
       });
@@ -125,6 +126,10 @@ class AyrshareService {
   }
 
   async uploadMedia(file: File) {
+    if (!this.isConfigured()) {
+      throw new Error('Cannot upload media without API configuration');
+    }
+
     const formData = new FormData();
     formData.append('file', file);
 
@@ -133,7 +138,79 @@ class AyrshareService {
       body: formData,
       headers: {
         'Authorization': `Bearer ${this.apiKey}`,
+        // Remove Content-Type to let browser set it with boundary for FormData
       },
+    });
+  }
+
+  async getUnsplashImage(keywords: string) {
+    return this.makeRequest('/unsplash', {
+      method: 'POST',
+      body: JSON.stringify({ 
+        keywords,
+        orientation: 'landscape' 
+      }),
+    });
+  }
+
+  // Enhanced API methods based on official Ayrshare documentation
+  
+  async getMediaLibrary(type?: 'image' | 'video') {
+    const endpoint = type ? `/media?type=${type}` : '/media';
+    return this.makeRequest(endpoint);
+  }
+
+  async generateHashtags(keywords: string) {
+    return this.makeRequest('/generate/hashtags', {
+      method: 'POST',
+      body: JSON.stringify({ keywords }),
+    });
+  }
+
+  async shortenLinks(urls: string[]) {
+    return this.makeRequest('/shorten', {
+      method: 'POST', 
+      body: JSON.stringify({ urls }),
+    });
+  }
+
+  async getComments(postId: string) {
+    return this.makeRequest(`/comments/${postId}`);
+  }
+
+  async addComment(postId: string, comment: string) {
+    return this.makeRequest(`/comments/${postId}`, {
+      method: 'POST',
+      body: JSON.stringify({ comment }),
+    });
+  }
+
+  async deleteComment(commentId: string) {
+    return this.makeRequest(`/comments/${commentId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async getReviews(platform?: string) {
+    const endpoint = platform ? `/reviews?platform=${platform}` : '/reviews';
+    return this.makeRequest(endpoint);
+  }
+
+  async replyToReview(reviewId: string, reply: string) {
+    return this.makeRequest(`/reviews/${reviewId}/reply`, {
+      method: 'POST',
+      body: JSON.stringify({ reply }),
+    });
+  }
+
+  async createRssFeed(feedData: {
+    url: string;
+    platforms: string[];
+    schedulePattern?: string;
+  }) {
+    return this.makeRequest('/rss', {
+      method: 'POST',
+      body: JSON.stringify(feedData),
     });
   }
 

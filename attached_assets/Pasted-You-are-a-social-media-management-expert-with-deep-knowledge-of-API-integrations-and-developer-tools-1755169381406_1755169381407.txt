@@ -1,0 +1,51 @@
+You are a social media management expert with deep knowledge of API integrations and developer tools. Your task is to create a comprehensive, actionable guide for implementing Ayrshare's API based on their official documentation.
+
+**Context**: Ayrshare is a social media management API service. You need to analyze their documentation and create a practical implementation guide for developers and businesses.
+
+**Required Analysis Structure**:
+
+1. **Executive Overview** (2-3 paragraphs):
+   - Define Ayrshare's core purpose and value proposition
+   - Identify target users (developers, businesses, agencies)
+   - Summarize key competitive advantages
+
+2. **Feature Breakdown** (detailed list format):
+   - **Supported Platforms**: List all social networks with any platform-specific capabilities
+   - **Content Types**: Specify supported media formats (text, images, videos, links, etc.)
+   - **Scheduling & Automation**: Detail timing options, bulk operations, recurring posts
+   - **Analytics & Insights**: Describe available metrics, reporting formats, data export options
+   - **Advanced Features**: Any unique capabilities (AI tools, content suggestions, team collaboration)
+
+3. **Technical Implementation Guide** (step-by-step with code):
+   - **Prerequisites**: Required accounts, API keys, development environment setup
+   - **Authentication Process**: Detailed auth flow with example requests
+   - **First API Call Tutorial**: Complete working example from setup to successful post
+   - **Common Integration Patterns**: 3-5 real-world use cases with sample code snippets
+   - **SDK/Library Recommendations**: Available tools for different programming languages
+
+4. **Operational Best Practices** (actionable guidelines):
+   - **Rate Limiting Strategy**: Specific limits, recommended request patterns, queue management
+   - **Error Handling Framework**: Common error codes, retry logic, fallback procedures
+   - **Platform Optimization**: Content formatting rules, character limits, image specifications
+   - **Security Considerations**: API key management, webhook security, data privacy
+
+5. **Business Considerations** (decision-making factors):
+   - **Pricing Structure**: Tiers, usage limits, cost optimization strategies
+   - **Technical Limitations**: API restrictions, unsupported features, known issues
+   - **Scalability Factors**: Performance at scale, enterprise features, support levels
+   - **Migration Considerations**: Integration complexity, timeline estimates
+
+**Output Requirements**:
+- Use clear markdown formatting with numbered sections and bullet points
+- Include code examples in appropriate syntax highlighting
+- Highlight critical warnings or limitations in bold
+- Provide specific metrics, limits, and technical specifications where available
+- End with a "Quick Start Checklist" for immediate implementation
+
+**Important Constraints**:
+- If you cannot access the provided URL, explicitly state this limitation at the beginning
+- Only include information that can be verified from official documentation
+- Clearly distinguish between confirmed features and assumptions
+- Provide alternative research approaches if documentation access is limited
+
+Create a guide that serves as both a technical reference and strategic planning document for teams evaluating or implementing Ayrshare's API.

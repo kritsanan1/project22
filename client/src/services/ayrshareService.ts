@@ -7,6 +7,13 @@ class AyrshareService {
     if (!this.apiKey) {
       console.warn('Ayrshare API key not found. Social media features will be limited.');
     }
+    this.validateConfiguration();
+  }
+
+  private validateConfiguration(): void {
+    if (!this.apiKey || this.apiKey === 'your_ayrshare_api_key_here') {
+      console.warn('⚠️ Ayrshare API not properly configured. Please set VITE_AYRSHARE_API_KEY in your .env file');
+    }
   }
 
   private isConfigured(): boolean {
@@ -31,13 +38,32 @@ class AyrshareService {
       });
 
       if (!response.ok) {
-        throw new Error(`Ayrshare API error: ${response.status} ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = this.getErrorMessage(response.status, errorData);
+        throw new Error(errorMessage);
       }
 
       return await response.json();
     } catch (error) {
       console.error('Ayrshare API request failed:', error);
       throw error;
+    }
+  }
+
+  private getErrorMessage(status: number, errorData: any): string {
+    switch (status) {
+      case 401:
+        return 'Authentication failed. Please check your API key.';
+      case 403:
+        return 'Access denied. Your account may lack required permissions.';
+      case 429:
+        return 'Rate limit exceeded. Please wait before making more requests.';
+      case 500:
+        return 'Ayrshare server error. Please try again later.';
+      case 503:
+        return 'Ayrshare service temporarily unavailable.';
+      default:
+        return `Ayrshare API error: ${status} ${errorData.message || 'Unknown error'}`;
     }
   }
 
@@ -226,6 +252,34 @@ class AyrshareService {
         },
       ],
     };
+  }
+
+  // Test API connectivity and authentication
+  async testConnection(): Promise<{ success: boolean; message: string }> {
+    if (!this.isConfigured()) {
+      return {
+        success: false,
+        message: 'API key not configured. Add VITE_AYRSHARE_API_KEY to your environment variables.'
+      };
+    }
+
+    try {
+      const response = await this.makeRequest('/user');
+      return {
+        success: true,
+        message: 'Successfully connected to Ayrshare API'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Connection failed: ${(error as Error).message}`
+      };
+    }
+  }
+
+  // Validate API key and get user information
+  async getUserInfo() {
+    return this.makeRequest('/user');
   }
 }
 

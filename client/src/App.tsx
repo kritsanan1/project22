@@ -12,6 +12,7 @@ import Library from './pages/Library';
 import Analytics from './pages/Analytics';
 import Collaboration from './pages/Collaboration';
 import SocialMedia from './pages/SocialMedia';
+import { Helmet } from "react-helmet-async";
 
 function App() {
   return (
@@ -19,8 +20,10 @@ function App() {
       <SocialMediaProvider>
         <Router>
           <div className="min-h-screen bg-cream">
-            <Navigation />
-            <main className="transition-all duration-300 ease-in-out">
+            <header role="banner">
+              <Navigation />
+            </header>
+            <main role="main" className="flex-1">
               <Switch>
                 <Route path="/" component={Dashboard} />
                 <Route path="/calendar" component={Calendar} />

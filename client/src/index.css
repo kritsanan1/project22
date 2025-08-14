@@ -1,3 +1,118 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mobile-first responsive design improvements */
+@layer base {
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  
+  /* Responsive typography */
+  h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+  h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); }
+  h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+  h4 { font-size: clamp(1.125rem, 2.5vw, 1.5rem); }
+  
+  /* Improved touch targets for mobile */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@layer components {
+  /* Mobile navigation improvements */
+  .mobile-nav {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .mobile-nav.open {
+    transform: translateX(0);
+  }
+  
+  /* Touch-friendly spacing */
+  .touch-target {
+    @apply p-3 min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+  
+  /* Responsive grid improvements */
+  .responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .responsive-grid {
+      gap: 1.5rem;
+    }
+  }
+  
+  /* Card responsiveness */
+  .responsive-card {
+    @apply w-full max-w-full;
+    min-height: 120px;
+  }
+  
+  @media (min-width: 640px) {
+    .responsive-card {
+      min-height: 150px;
+    }
+  }
+  
+  /* Form improvements for mobile */
+  .mobile-form input,
+  .mobile-form textarea,
+  .mobile-form select {
+    @apply text-base; /* Prevents zoom on iOS */
+  }
+}
+
+@layer utilities {
+  /* Accessibility improvements */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* Focus improvements */
+  .focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-500;
+  }
+  
+  /* Safe area support for devices with notches */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Responsive text utilities */
+  .text-responsive-xs { font-size: clamp(0.75rem, 2vw, 0.875rem); }
+  .text-responsive-sm { font-size: clamp(0.875rem, 2.5vw, 1rem); }
+  .text-responsive-base { font-size: clamp(1rem, 3vw, 1.125rem); }
+  .text-responsive-lg { font-size: clamp(1.125rem, 3.5vw, 1.25rem); }
+}

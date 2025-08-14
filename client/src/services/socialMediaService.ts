@@ -7,7 +7,7 @@ class SocialMediaService {
     platforms: string[];
     mediaUrls?: string[];
     scheduledAt?: string;
-  }): Promise<any> {
+  }) {
     try {
       const result = await ayrshareService.publishPost({
         post: postData.content,

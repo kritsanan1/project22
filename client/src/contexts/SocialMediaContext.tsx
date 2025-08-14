@@ -144,8 +144,13 @@ export function SocialMediaProvider({ children }: { children: React.ReactNode })
     try {
       const accounts = await socialMediaService.getConnectedAccounts();
       dispatch({ type: 'SET_ACCOUNTS', payload: accounts });
+      dispatch({ type: 'SET_ERROR', payload: null });
     } catch (error) {
-      console.error('Failed to fetch accounts:', error);
+      const errorMessage = (error as Error).message;
+      if (!errorMessage.includes('not configured')) {
+        console.error('Failed to fetch accounts:', error);
+      }
+      dispatch({ type: 'SET_ERROR', payload: errorMessage });
     }
   };
 
@@ -153,8 +158,13 @@ export function SocialMediaProvider({ children }: { children: React.ReactNode })
     try {
       const trends = await socialMediaService.getTrendingTopics(platform);
       dispatch({ type: 'SET_TRENDS', payload: trends });
+      dispatch({ type: 'SET_ERROR', payload: null });
     } catch (error) {
-      console.error('Failed to fetch trends:', error);
+      const errorMessage = (error as Error).message;
+      if (!errorMessage.includes('not configured')) {
+        console.error('Failed to fetch trends:', error);
+      }
+      dispatch({ type: 'SET_ERROR', payload: errorMessage });
     }
   };
 
@@ -162,8 +172,13 @@ export function SocialMediaProvider({ children }: { children: React.ReactNode })
     try {
       const interactions = await socialMediaService.getSocialInteractions();
       dispatch({ type: 'SET_INTERACTIONS', payload: interactions });
+      dispatch({ type: 'SET_ERROR', payload: null });
     } catch (error) {
-      console.error('Failed to fetch interactions:', error);
+      const errorMessage = (error as Error).message;
+      if (!errorMessage.includes('not configured')) {
+        console.error('Failed to fetch interactions:', error);
+      }
+      dispatch({ type: 'SET_ERROR', payload: errorMessage });
     }
   };
 
@@ -182,9 +197,19 @@ export function SocialMediaProvider({ children }: { children: React.ReactNode })
   };
 
   useEffect(() => {
-    fetchAccounts();
-    fetchTrends();
-    fetchInteractions();
+    // Only attempt initial fetch if we have some basic configuration
+    const hasApiKey = import.meta.env.VITE_AYRSHARE_API_KEY;
+    
+    if (hasApiKey) {
+      fetchAccounts();
+      fetchTrends();
+      fetchInteractions();
+    } else {
+      // Load mock data for development
+      fetchAccounts().catch(() => {}); // Silently catch and use mock data
+      fetchTrends().catch(() => {});
+      fetchInteractions().catch(() => {});
+    }
   }, []);
 
   const contextValue: SocialMediaContextType = {

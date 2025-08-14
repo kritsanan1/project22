@@ -9,7 +9,15 @@ class AyrshareService {
     }
   }
 
+  private isConfigured(): boolean {
+    return !!this.apiKey && this.apiKey !== '';
+  }
+
   private async makeRequest(endpoint: string, options: RequestInit = {}) {
+    if (!this.isConfigured()) {
+      throw new Error('Ayrshare API not configured. Please add VITE_AYRSHARE_API_KEY to your environment variables.');
+    }
+
     const url = `${this.baseUrl}${endpoint}`;
 
     try {
@@ -68,16 +76,25 @@ class AyrshareService {
   }
 
   async getConnectedAccounts() {
+    if (!this.isConfigured()) {
+      return this.getMockConnectedAccounts();
+    }
     return this.makeRequest('/profiles');
   }
 
   async deletePost(postId: string) {
+    if (!this.isConfigured()) {
+      throw new Error('Cannot delete posts without API configuration');
+    }
     return this.makeRequest(`/delete/${postId}`, {
       method: 'DELETE',
     });
   }
 
   async getPostHistory(limit = 50) {
+    if (!this.isConfigured()) {
+      return this.getMockPostHistory();
+    }
     return this.makeRequest(`/history?limit=${limit}`);
   }
 
@@ -151,6 +168,64 @@ class AyrshareService {
     ];
 
     return { trends: mockTopics };
+  }
+
+  private getMockConnectedAccounts() {
+    return {
+      profiles: [
+        {
+          id: 'mock-twitter',
+          platform: 'twitter',
+          username: 'demo_account',
+          status: 'demo',
+          profilePicture: 'https://via.placeholder.com/40',
+        },
+        {
+          id: 'mock-linkedin',
+          platform: 'linkedin',
+          username: 'Demo Company',
+          status: 'demo',
+          profilePicture: 'https://via.placeholder.com/40',
+        },
+        {
+          id: 'mock-instagram',
+          platform: 'instagram',
+          username: 'demo_brand',
+          status: 'demo',
+          profilePicture: 'https://via.placeholder.com/40',
+        },
+      ],
+    };
+  }
+
+  private getMockPostHistory() {
+    return {
+      posts: [
+        {
+          id: 'mock-1',
+          post: 'Welcome to CSM Smart Connect! 🚀 Streamline your social media management with our powerful tools.',
+          platforms: ['twitter', 'linkedin'],
+          status: 'published',
+          publishedAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+          engagement: { likes: 42, shares: 8, comments: 5 },
+        },
+        {
+          id: 'mock-2',
+          post: 'Pro tip: Schedule your content during peak engagement hours for maximum reach! 📊 #ContentStrategy',
+          platforms: ['twitter'],
+          status: 'published',
+          publishedAt: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+          engagement: { likes: 28, shares: 12, comments: 3 },
+        },
+        {
+          id: 'mock-3',
+          post: 'Coming soon: AI-powered content suggestions to boost your social media performance! Stay tuned... 🤖✨',
+          platforms: ['linkedin', 'instagram'],
+          status: 'scheduled',
+          scheduledAt: new Date(Date.now() + 86400000).toISOString(), // 1 day from now
+        },
+      ],
+    };
   }
 }
 

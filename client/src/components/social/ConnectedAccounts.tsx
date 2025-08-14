@@ -12,9 +12,11 @@ import {
 } from 'lucide-react';
 import { useSocialMedia } from '../../contexts/SocialMediaContext';
 import { SocialAccount } from '../../types/social';
+import { ConfigurationStatus } from './ConfigurationStatus';
 
 const ConnectedAccounts: React.FC = () => {
   const { state, fetchAccounts } = useSocialMedia();
+  const isConfigured = !!import.meta.env.VITE_AYRSHARE_API_KEY;
 
   const platformIcons = {
     twitter: Twitter,
@@ -50,6 +52,11 @@ const ConnectedAccounts: React.FC = () => {
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-100">
+      <ConfigurationStatus 
+        isConfigured={isConfigured} 
+        service="Ayrshare" 
+        className="mb-4"
+      />
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-sage/10 rounded-xl flex items-center justify-center">

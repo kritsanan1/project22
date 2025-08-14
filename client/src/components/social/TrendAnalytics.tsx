@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Hash, BarChart3, RefreshCw } from 'lucide-react';
 import { useSocialMedia } from '../../contexts/SocialMediaContext';
 import { TrendingTopic } from '../../types/social';
+import { ConfigurationStatus } from './ConfigurationStatus';
 
 const TrendAnalytics: React.FC = () => {
   const { state, fetchTrends } = useSocialMedia();
@@ -44,8 +45,16 @@ const TrendAnalytics: React.FC = () => {
     }
   };
 
+  const isConfigured = !!import.meta.env.VITE_AYRSHARE_API_KEY;
+
+
   return (
     <div className="bg-white rounded-2xl p-6 shadow-soft border border-neutral-100">
+      <ConfigurationStatus 
+        isConfigured={isConfigured} 
+        service="Ayrshare" 
+        className="mb-4"
+      />
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-warm-blue/10 rounded-xl flex items-center justify-center">
@@ -56,7 +65,7 @@ const TrendAnalytics: React.FC = () => {
             <p className="text-sm text-neutral-600">Monitor trending topics and hashtags</p>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-3">
           <select
             value={selectedPlatform}
@@ -69,7 +78,7 @@ const TrendAnalytics: React.FC = () => {
               </option>
             ))}
           </select>
-          
+
           <button
             onClick={() => fetchTrends(selectedPlatform === 'all' ? undefined : selectedPlatform)}
             disabled={state.isLoading}
@@ -104,7 +113,7 @@ const TrendAnalytics: React.FC = () => {
                     <p className="text-sm text-neutral-600 capitalize">{trend.platform}</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-3">
                   <span className={`px-2 py-1 rounded-lg text-xs font-medium ${getSentimentColor(trend.sentiment)}`}>
                     {trend.sentiment}

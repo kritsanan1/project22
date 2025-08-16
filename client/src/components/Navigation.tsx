@@ -10,10 +10,11 @@ import {
   Share2, 
   LayoutDashboard, 
   Menu,
-  X
+  X,
+  PenTool
 } from 'lucide-react';
-import { LanguageSelector } from './i18n/LanguageSelector';
-import { useTranslation } from '../hooks/useTranslation';
+// import { LanguageSelector } from './i18n/LanguageSelector';
+// import { useTranslation } from '../hooks/useTranslation';
 
 interface NavItem {
   path: string;
@@ -25,7 +26,20 @@ interface NavItem {
 const Navigation = () => {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { t } = useTranslation('navigation');
+  // const { t } = useTranslation('navigation');
+  
+  // Simple translation fallback
+  const t = (key: string) => {
+    const translations: Record<string, string> = {
+      dashboard: 'Dashboard',
+      social: 'Social Media',
+      calendar: 'Calendar',
+      analytics: 'Analytics',
+      collaboration: 'Collaboration',
+      library: 'Library'
+    };
+    return translations[key] || key;
+  };
 
   const navItems: NavItem[] = [
     { path: '/dashboard', icon: LayoutDashboard, label: t('dashboard'), description: 'Main overview and insights' },
@@ -92,9 +106,9 @@ const Navigation = () => {
             </div>
 
             {/* Language Selector */}
-            <div className="hidden lg:flex items-center">
+            {/* <div className="hidden lg:flex items-center">
               <LanguageSelector />
-            </div>
+            </div> */}
           </div>
         </div>
       </nav>

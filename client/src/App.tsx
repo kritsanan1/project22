@@ -16,7 +16,7 @@ import Analytics from './pages/Analytics';
 import Collaboration from './pages/Collaboration';
 import SocialMedia from './pages/SocialMedia';
 import { Helmet } from "react-helmet-async";
-import './i18n';
+// import './i18n';
 
 function App() {
   return (

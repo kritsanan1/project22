@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web", "nodejs-18"]
+modules = ["web", "nodejs-20", "nodejs-with-prybar-18"]
 run = "npm run dev"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 

@@ -1,6 +1,17 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+// import { setupVite, serveStatic, log } from "./vite";
+
+// Temporary log function
+function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
 
 const app = express();
 app.use(express.json());
@@ -47,14 +58,19 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+  // Temporarily disabled Vite setup due to dependency conflicts
+  // TODO: Re-enable Vite once dependencies are fixed
+  app.get('*', (req, res) => {
+    res.send(`
+      <html>
+        <body>
+          <h1>CSM Smart Connect Server</h1>
+          <p>Server is running! Frontend temporarily disabled due to dependency conflicts.</p>
+          <p>API endpoints are available at /api/*</p>
+        </body>
+      </html>
+    `);
+  });
 
   // ALWAYS serve the app on port 5000
   // this serves both the API and the client.

@@ -10,6 +10,7 @@ import PostScheduler from '../components/social/PostScheduler';
 import ContentSuggestions from '../components/social/ContentSuggestions';
 import { ConfigurationStatus } from '../components/social/ConfigurationStatus';
 import { ApiConfigurationDashboard } from '../components/social/ApiConfigurationDashboard';
+import ConnectionGuide from '../components/social/ConnectionGuide';
 
 const SocialMedia = () => {
   const { state } = useSocialMedia();
@@ -40,7 +41,12 @@ const SocialMedia = () => {
       case 'analytics':
         return <SocialAnalytics />;
       case 'accounts':
-        return <ConnectedAccounts />;
+        return (
+          <div className="space-y-6">
+            <ConnectionGuide />
+            <ConnectedAccounts />
+          </div>
+        );
       default:
         return <PostCreator onPostCreated={(post) => console.log('Post created:', post)} />;
     }

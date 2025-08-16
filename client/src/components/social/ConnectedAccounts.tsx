@@ -13,6 +13,7 @@ import {
 import { useSocialMedia } from '../../contexts/SocialMediaContext';
 import { SocialAccount } from '../../types/social';
 import { ConfigurationStatus } from './ConfigurationStatus';
+import { ayrshareService } from '../../services/ayrshareService';
 
 const ConnectedAccounts: React.FC = () => {
   const { state, fetchAccounts } = useSocialMedia();
@@ -37,10 +38,34 @@ const ConnectedAccounts: React.FC = () => {
     fetchAccounts();
   }, []);
 
-  const handleConnect = (platform: string) => {
+  const handleConnect = async (platform: string) => {
+    if (!isConfigured) {
+      alert('Please configure your Ayrshare API key first in the Secrets section.');
+      return;
+    }
+
     console.log('Connecting to platform:', platform);
-    // This would typically redirect to OAuth flow
-    alert(`Redirecting to ${platform} authentication...`);
+    
+    // In a production app, this would redirect to Ayrshare's OAuth flow
+    // For now, we'll simulate the connection process
+    try {
+      // Test API connectivity first
+      const connectionTest = await ayrshareService.testConnection();
+      
+      if (connectionTest.success) {
+        // Direct user to Ayrshare dashboard for account linking
+        const ayrshareUrl = 'https://app.ayrshare.com/dashboard/social-accounts';
+        window.open(ayrshareUrl, '_blank', 'width=800,height=600');
+        
+        // Show instructions to user
+        alert(`Please complete the ${platform} connection in the opened Ayrshare dashboard window, then click "Refresh" to update your connected accounts.`);
+      } else {
+        alert(`Connection failed: ${connectionTest.message}`);
+      }
+    } catch (error) {
+      console.error('Failed to initiate connection:', error);
+      alert('Failed to connect. Please check your API configuration.');
+    }
   };
 
   const handleDisconnect = (accountId: string) => {
@@ -139,12 +164,38 @@ const ConnectedAccounts: React.FC = () => {
       </div>
 
       {/* Add New Platform */}
-      <div className="mt-6 p-4 border-2 border-dashed border-neutral-200 rounded-xl text-center">
-        <Plus className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
-        <p className="text-neutral-600 mb-3">Connect more social media platforms</p>
-        <button className="text-sage hover:text-sage/80 font-medium transition-colors duration-200">
-          Browse Available Platforms
-        </button>
+      <div className="mt-6 p-6 border-2 border-dashed border-neutral-200 rounded-xl">
+        <div className="text-center mb-4">
+          <Plus className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
+          <p className="text-neutral-600 mb-3">Connect more social media platforms</p>
+        </div>
+        
+        {/* Available Platforms Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {['facebook', 'youtube', 'tiktok', 'pinterest'].map((platform) => {
+            const Icon = platformIcons[platform as keyof typeof platformIcons] || Settings;
+            const colorClass = platformColors[platform as keyof typeof platformColors] || 'text-neutral-500 bg-neutral-50';
+            
+            return (
+              <button
+                key={platform}
+                onClick={() => handleConnect(platform)}
+                className="flex flex-col items-center p-3 border border-neutral-200 rounded-lg hover:border-sage/30 hover:bg-sage/5 transition-all duration-200 group"
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2 ${colorClass} group-hover:scale-110 transition-transform duration-200`}>
+                  <Icon className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-medium text-neutral-700 capitalize">{platform}</span>
+              </button>
+            );
+          })}
+        </div>
+        
+        <div className="mt-4 text-center">
+          <p className="text-xs text-neutral-500">
+            Supported: X/Twitter, LinkedIn, Instagram, Facebook, YouTube, TikTok, Pinterest, and more
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,11 @@
 import React from 'react';
-import { Calendar, Lightbulb, Target, TrendingUp, Clock, Users } from 'lucide-react';
+import { Calendar, Lightbulb, Target, TrendingUp, Clock, Users, BarChart3 } from 'lucide-react';
 import QuickActions from '../components/dashboard/QuickActions';
 import RecentActivity from '../components/dashboard/RecentActivity';
 import ContentPillars from '../components/dashboard/ContentPillars';
 import UpcomingDeadlines from '../components/dashboard/UpcomingDeadlines';
+import ActivityFeed from '../components/ui/ActivityFeed';
+import MetricsCard from '../components/ui/MetricsCard';
 
 interface StatsCardProps {
   icon: React.ComponentType<{ className?: string }>;
@@ -73,30 +75,111 @@ const Dashboard = () => {
     }
   ];
 
+  // Sample data for metrics and activity feed
+  const metricsData = [
+    {
+      title: 'Total Engagement',
+      value: '24.5K',
+      change: { value: 12.5, type: 'increase' as const, period: 'last month' },
+      icon: TrendingUp
+    },
+    {
+      title: 'Content Published',
+      value: 156,
+      change: { value: 8.3, type: 'increase' as const, period: 'last week' },
+      icon: Calendar
+    },
+    {
+      title: 'Team Members',
+      value: 12,
+      change: { value: 0, type: 'neutral' as const },
+      icon: Users
+    },
+    {
+      title: 'Analytics Score',
+      value: '94%',
+      change: { value: 2.1, type: 'increase' as const, period: 'yesterday' },
+      icon: BarChart3
+    }
+  ];
+
+  const activityData = [
+    {
+      id: '1',
+      type: 'post' as const,
+      user: { name: 'Sarah Johnson', initials: 'SJ' },
+      action: 'published a new post',
+      content: 'Excited to share our latest product updates with the community!',
+      timestamp: '2 minutes ago',
+      platform: 'LinkedIn'
+    },
+    {
+      id: '2',
+      type: 'collaboration' as const,
+      user: { name: 'Mike Chen', initials: 'MC' },
+      action: 'added comments to',
+      content: 'Q4 Marketing Strategy document',
+      timestamp: '15 minutes ago'
+    },
+    {
+      id: '3',
+      type: 'like' as const,
+      user: { name: 'Emma Wilson', initials: 'EW' },
+      action: 'received 50+ likes on',
+      content: 'Behind the scenes: Our creative process',
+      timestamp: '1 hour ago',
+      platform: 'Instagram'
+    },
+    {
+      id: '4',
+      type: 'share' as const,
+      user: { name: 'Alex Rodriguez', initials: 'AR' },
+      action: 'shared content',
+      content: 'Top 10 Social Media Trends for 2024',
+      timestamp: '3 hours ago',
+      platform: 'Twitter'
+    }
+  ];
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8" data-testid="dashboard-container">
-      <div className="mb-8" data-testid="dashboard-header">
-        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2" data-testid="dashboard-title">Good morning, Sarah</h1>
-        <p className="text-sm sm:text-base text-neutral-600" data-testid="dashboard-subtitle">Let's make today's content planning productive and strategic.</p>
-      </div>
-
-      {/* Stats Overview */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8" data-testid="stats-overview">
-        {statsData.map((stat, index) => (
-          <StatsCard key={index} {...stat} />
-        ))}
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8" data-testid="main-content-grid">
-        <div className="lg:col-span-2 space-y-8" data-testid="primary-content">
-          <QuickActions />
-          <ContentPillars />
+    <div className="min-h-screen bg-cream">
+      <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2" data-testid="dashboard-title">Good morning, Sarah</h1>
+          <p className="text-sm sm:text-base text-neutral-600" data-testid="dashboard-subtitle">Let's make today's content planning productive and strategic.</p>
         </div>
-        
-        <div className="space-y-6 lg:space-y-8" data-testid="sidebar-content">
-          <UpcomingDeadlines />
-          <RecentActivity />
+
+        {/* Stats Overview */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8" data-testid="stats-overview">
+          {statsData.map((stat, index) => (
+            <StatsCard key={index} {...stat} />
+          ))}
+        </div>
+
+        {/* Quick Actions Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2">
+            <QuickActions />
+          </div>
+          <div>
+            <UpcomingDeadlines />
+          </div>
+        </div>
+
+        {/* Main Content Row */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-2 space-y-6">
+            <RecentActivity />
+            <ContentPillars />
+          </div>
+          <div className="xl:col-span-1">
+            <ActivityFeed 
+              activities={activityData}
+              maxHeight="max-h-[600px]"
+              className="sticky top-24 custom-scrollbar"
+            />
+          </div>
         </div>
       </div>
     </div>

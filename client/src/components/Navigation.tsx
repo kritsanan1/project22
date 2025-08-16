@@ -3,20 +3,21 @@ import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { 
   Calendar, 
-  Lightbulb, 
-  Target, 
-  FolderOpen, 
   BarChart3, 
   Users, 
   Home,
   PenTool,
-  Share2
+  Share2,
+  FolderOpen,
+  Menu,
+  X
 } from 'lucide-react';
 
 interface NavItem {
   path: string;
   icon: React.ComponentType<{ className?: string }>;
   label: string;
+  description: string;
 }
 
 const Navigation = () => {
@@ -24,90 +25,114 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems: NavItem[] = [
-    { path: '/dashboard', icon: Home, label: 'Dashboard' },
-    { path: '/calendar', icon: Calendar, label: 'Calendar' },
-    { path: '/ideation', icon: Lightbulb, label: 'Ideation' },
-    { path: '/strategy', icon: Target, label: 'Strategy' },
-    { path: '/library', icon: FolderOpen, label: 'Library' },
-    { path: '/analytics', icon: BarChart3, label: 'Analytics' },
-    { path: '/collaboration', icon: Users, label: 'Team' },
-    { path: '/social', icon: Share2, label: 'Social' },
+    { path: '/dashboard', icon: Home, label: 'Dashboard', description: 'Main overview and insights' },
+    { path: '/social', icon: Share2, label: 'Social Media Management', description: 'Manage posts and accounts' },
+    { path: '/calendar', icon: Calendar, label: 'Content Calendar', description: 'Schedule and plan content' },
+    { path: '/analytics', icon: BarChart3, label: 'Analytics', description: 'Performance metrics and reports' },
+    { path: '/collaboration', icon: Users, label: 'Collaboration & Projects', description: 'Team collaboration tools' },
+    { path: '/library', icon: FolderOpen, label: 'Asset Library', description: 'Media and content assets' },
   ];
 
   return (
-    <nav className="bg-white/80 backdrop-blur-sm border-b border-neutral-200/50 sticky top-0 z-50" data-testid="main-navigation">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-2" data-testid="brand-logo">
-            <div className="w-8 h-8 bg-sage rounded-xl flex items-center justify-center">
-              <PenTool className="w-4 h-4 text-white" />
+    <>
+      {/* Top Navigation Bar */}
+      <nav className="bg-white/90 backdrop-blur-md border-b border-neutral-200/60 sticky top-0 z-50 shadow-sm" data-testid="main-navigation">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Brand Logo */}
+            <div className="flex items-center space-x-3" data-testid="brand-logo">
+              <div className="w-9 h-9 bg-gradient-to-br from-sage to-soft-emerald rounded-xl flex items-center justify-center shadow-sm">
+                <PenTool className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-neutral-800 leading-none">ContentFlow</span>
+                <span className="text-xs text-neutral-500 leading-none">Social Media Suite</span>
+              </div>
             </div>
-            <span className="text-lg sm:text-xl font-semibold text-neutral-800">ContentFlow</span>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-1" data-testid="desktop-navigation">
-            {navItems.map(({ path, icon: Icon, label }) => (
-              <Link
-                key={path}
-                href={path}
-                className={`flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-250 ${
-                  location === path
-                    ? 'bg-sage text-white shadow-sm'
-                    : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
-                }`}
-                data-testid={`nav-link-${label.toLowerCase()}`}
-              >
-                <Icon className="w-4 h-4" />
-                <span className="hidden lg:inline">{label}</span>
-              </Link>
-            ))}
-          </div>
-          
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-xl text-neutral-600 hover:text-sage hover:bg-sage/5 transition-all duration-250"
-              data-testid="mobile-menu-button"
-              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        {/* Mobile Navigation Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-sm" data-testid="mobile-navigation">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-1" data-testid="desktop-navigation">
               {navItems.map(({ path, icon: Icon, label }) => (
                 <Link
                   key={path}
                   href={path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-3 py-3 rounded-xl text-base font-medium transition-all duration-250 ${
+                  className={`relative flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
                     location === path
-                      ? 'bg-sage text-white shadow-sm'
-                      : 'text-neutral-600 hover:text-sage hover:bg-sage/5'
+                      ? 'bg-sage text-white shadow-md'
+                      : 'text-neutral-600 hover:text-sage hover:bg-sage/8'
                   }`}
-                  data-testid={`mobile-nav-link-${label.toLowerCase()}`}
+                  data-testid={`nav-link-${label.toLowerCase().replace(/\s+/g, '-')}`}
                 >
-                  <Icon className="w-5 h-5" />
-                  <span>{label}</span>
+                  <Icon className="w-4 h-4" />
+                  <span className="whitespace-nowrap">{label}</span>
+                  {location === path && (
+                    <div className="absolute -bottom-px left-1/2 transform -translate-x-1/2 w-12 h-0.5 bg-white rounded-full" />
+                  )}
                 </Link>
               ))}
             </div>
+            
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2.5 rounded-xl text-neutral-600 hover:text-sage hover:bg-sage/8 transition-all duration-300 touch-target"
+                data-testid="mobile-menu-button"
+                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
           </div>
-        )}
         </div>
-    </nav>
+      </nav>
+
+      {/* Mobile Navigation Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          
+          {/* Mobile Menu */}
+          <div className="fixed top-16 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-neutral-200/60 shadow-xl" data-testid="mobile-navigation">
+            <div className="max-h-96 overflow-y-auto">
+              <div className="px-4 py-3 space-y-1">
+                {navItems.map(({ path, icon: Icon, label, description }) => (
+                  <Link
+                    key={path}
+                    href={path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-start space-x-4 px-4 py-4 rounded-xl transition-all duration-300 touch-target ${
+                      location === path
+                        ? 'bg-sage text-white shadow-md'
+                        : 'text-neutral-700 hover:text-sage hover:bg-sage/8'
+                    }`}
+                    data-testid={`mobile-nav-link-${label.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    <Icon className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-base">{label}</div>
+                      <div className={`text-sm mt-0.5 ${
+                        location === path ? 'text-white/80' : 'text-neutral-500'
+                      }`}>
+                        {description}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

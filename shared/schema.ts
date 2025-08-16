@@ -306,6 +306,64 @@ export const auditLogs = pgTable("audit_logs", {
 });
 
 // ============================================================================
+// MOBILE PERFORMANCE TRACKING
+// ============================================================================
+
+export const mobileAnalytics = pgTable("mobile_analytics", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: 'cascade' }),
+  url: text("url").notNull(),
+  timestamp: timestamp("timestamp").defaultNow(),
+  deviceType: text("device_type").notNull(), // mobile, tablet, desktop
+  screenWidth: integer("screen_width"),
+  screenHeight: integer("screen_height"),
+  userAgent: text("user_agent"),
+  connectionType: text("connection_type"), // 4g, wifi, slow-2g, etc
+  performanceScore: integer("performance_score"),
+  accessibilityScore: integer("accessibility_score"),
+  bestPracticesScore: integer("best_practices_score"),
+  seoScore: integer("seo_score"),
+  pwaScore: integer("pwa_score"),
+  firstContentfulPaint: decimal("first_contentful_paint", { precision: 8, scale: 2 }),
+  largestContentfulPaint: decimal("largest_contentful_paint", { precision: 8, scale: 2 }),
+  cumulativeLayoutShift: decimal("cumulative_layout_shift", { precision: 6, scale: 4 }),
+  speedIndex: decimal("speed_index", { precision: 8, scale: 2 }),
+  opportunities: json("opportunities").default([]),
+});
+
+export const lighthouseAudits = pgTable("lighthouse_audits", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: 'cascade' }),
+  url: text("url").notNull(),
+  strategy: text("strategy").notNull(), // mobile, desktop
+  timestamp: timestamp("timestamp").defaultNow(),
+  performanceScore: integer("performance_score"),
+  accessibilityScore: integer("accessibility_score"),
+  bestPracticesScore: integer("best_practices_score"),
+  seoScore: integer("seo_score"),
+  pwaScore: integer("pwa_score"),
+  firstContentfulPaint: decimal("first_contentful_paint", { precision: 8, scale: 2 }),
+  largestContentfulPaint: decimal("largest_contentful_paint", { precision: 8, scale: 2 }),
+  cumulativeLayoutShift: decimal("cumulative_layout_shift", { precision: 6, scale: 4 }),
+  speedIndex: decimal("speed_index", { precision: 8, scale: 2 }),
+  opportunities: json("opportunities").default([]),
+  diagnostics: json("diagnostics").default([]),
+});
+
+export const pageViews = pgTable("page_views", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id),
+  path: text("path").notNull(),
+  title: text("title"),
+  timestamp: timestamp("timestamp").defaultNow(),
+  userAgent: text("user_agent"),
+  referrer: text("referrer"),
+  deviceType: text("device_type"),
+  screenResolution: text("screen_resolution"),
+  sessionId: text("session_id"),
+});
+
+// ============================================================================
 // SCHEMA EXPORTS
 // ============================================================================
 
@@ -317,6 +375,9 @@ export const insertSubscriptionPlanSchema = createInsertSchema(subscriptionPlans
 export const insertUserSubscriptionSchema = createInsertSchema(userSubscriptions);
 export const insertSocialAccountSchema = createInsertSchema(socialAccounts);
 export const insertWorkflowSchema = createInsertSchema(workflows);
+export const insertMobileAnalyticsSchema = createInsertSchema(mobileAnalytics);
+export const insertLighthouseAuditSchema = createInsertSchema(lighthouseAudits);
+export const insertPageViewSchema = createInsertSchema(pageViews);
 
 // Type exports
 export type User = typeof users.$inferSelect;
@@ -327,3 +388,9 @@ export type SocialAccount = typeof socialAccounts.$inferSelect;
 export type SubscriptionPlan = typeof subscriptionPlans.$inferSelect;
 export type UserSubscription = typeof userSubscriptions.$inferSelect;
 export type Workflow = typeof workflows.$inferSelect;
+export type MobileAnalytics = typeof mobileAnalytics.$inferSelect;
+export type InsertMobileAnalytics = typeof mobileAnalytics.$inferInsert;
+export type LighthouseAudit = typeof lighthouseAudits.$inferSelect;
+export type InsertLighthouseAudit = typeof lighthouseAudits.$inferInsert;
+export type PageView = typeof pageViews.$inferSelect;
+export type InsertPageView = typeof pageViews.$inferInsert;

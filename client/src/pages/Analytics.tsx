@@ -4,6 +4,8 @@ import MetricsOverview from '../components/analytics/MetricsOverview';
 import ContentPerformance from '../components/analytics/ContentPerformance';
 import ChannelAnalytics from '../components/analytics/ChannelAnalytics';
 import PlanningInsights from '../components/analytics/PlanningInsights';
+import MobilePerformanceTracker from '../components/analytics/MobilePerformanceTracker';
+import ResponsiveTestPanel from '../components/ui/ResponsiveTestPanel';
 
 const Analytics = () => {
   const [timeRange, setTimeRange] = useState('30d');
@@ -53,6 +55,16 @@ const Analytics = () => {
 
       {/* Metrics Overview */}
       <MetricsOverview timeRange={timeRange} />
+
+      {/* Mobile Performance Tracker */}
+      <div className="mt-8">
+        <MobilePerformanceTracker />
+      </div>
+
+      {/* Responsive Design Test Panel */}
+      <div className="mt-8">
+        <ResponsiveTestPanel />
+      </div>
 
       {/* Main Analytics */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">

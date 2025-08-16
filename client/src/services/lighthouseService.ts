@@ -38,12 +38,14 @@ class LighthouseService {
         url,
         key: this.apiKey,
         strategy,
-        category: 'performance',
-        category: 'accessibility',
-        category: 'best-practices',
-        category: 'seo',
-        category: 'pwa',
       });
+      
+      // Add multiple category parameters
+      params.append('category', 'performance');
+      params.append('category', 'accessibility');
+      params.append('category', 'best-practices');
+      params.append('category', 'seo');
+      params.append('category', 'pwa');
 
       const response = await fetch(`${this.baseUrl}?${params}`);
       const data = await response.json();

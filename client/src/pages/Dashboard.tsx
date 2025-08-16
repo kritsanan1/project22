@@ -103,43 +103,43 @@ const Dashboard = () => {
     }
   ];
 
-  const activityData = [
+  let activityData = [
     {
       id: '1',
       type: 'post' as const,
-      user: { name: 'Sarah Johnson', initials: 'SJ' },
+      user: { name: 'Sarah Chen', initials: 'SC' },
       action: 'published a new post',
-      content: 'Excited to share our latest product updates with the community!',
+      content: 'Excited to share our latest product update! 🚀',
       timestamp: '2 minutes ago',
       platform: 'LinkedIn'
     },
     {
       id: '2',
       type: 'collaboration' as const,
-      user: { name: 'Mike Chen', initials: 'MC' },
-      action: 'added comments to',
-      content: 'Q4 Marketing Strategy document',
+      user: { name: 'Mike Johnson', initials: 'MJ' },
+      action: 'assigned you to review',
+      content: 'Q4 Marketing Campaign Draft',
       timestamp: '15 minutes ago'
     },
     {
       id: '3',
       type: 'like' as const,
       user: { name: 'Emma Wilson', initials: 'EW' },
-      action: 'received 50+ likes on',
-      content: 'Behind the scenes: Our creative process',
+      action: 'liked your post',
       timestamp: '1 hour ago',
-      platform: 'Instagram'
+      platform: 'Twitter'
     },
     {
       id: '4',
-      type: 'share' as const,
-      user: { name: 'Alex Rodriguez', initials: 'AR' },
-      action: 'shared content',
-      content: 'Top 10 Social Media Trends for 2024',
-      timestamp: '3 hours ago',
-      platform: 'Twitter'
+      type: 'comment' as const,
+      user: { name: 'David Park', initials: 'DP' },
+      action: 'commented on',
+      content: 'Great insights on content strategy!',
+      timestamp: '2 hours ago',
+      platform: 'Instagram'
     }
   ];
+
 
   return (
     <div className="min-h-screen bg-cream">

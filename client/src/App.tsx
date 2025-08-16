@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Router, Route, Switch } from 'wouter';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { SocialMediaProvider } from './contexts/SocialMediaContext';
+import { LoadingSpinner } from './components/ui/LoadingSpinner';
 import Navigation from './components/Navigation';
 import Landing from './pages/Landing';
 import Pricing from './pages/Pricing';
@@ -15,12 +16,14 @@ import Analytics from './pages/Analytics';
 import Collaboration from './pages/Collaboration';
 import SocialMedia from './pages/SocialMedia';
 import { Helmet } from "react-helmet-async";
+import './i18n';
 
 function App() {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <SocialMediaProvider>
-        <Router>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><LoadingSpinner size="lg" /></div>}>
+      <DndProvider backend={HTML5Backend}>
+        <SocialMediaProvider>
+          <Router>
           <Switch>
             <Route path="/" component={Landing} />
             <Route path="/pricing" component={Pricing} />
@@ -47,6 +50,7 @@ function App() {
         </Router>
       </SocialMediaProvider>
     </DndProvider>
+    </Suspense>
   );
 }
 

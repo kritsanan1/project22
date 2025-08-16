@@ -1,17 +1,19 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { 
-  Calendar, 
   BarChart3, 
+  Calendar, 
+  Lightbulb, 
+  Target, 
+  FolderOpen, 
   Users, 
-  Home,
-  PenTool,
-  Share2,
-  FolderOpen,
+  Share2, 
+  LayoutDashboard, 
   Menu,
   X
 } from 'lucide-react';
+import { LanguageSelector } from './i18n/LanguageSelector';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface NavItem {
   path: string;
@@ -23,14 +25,15 @@ interface NavItem {
 const Navigation = () => {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useTranslation('navigation');
 
   const navItems: NavItem[] = [
-    { path: '/dashboard', icon: Home, label: 'Dashboard', description: 'Main overview and insights' },
-    { path: '/social', icon: Share2, label: 'Social Media Management', description: 'Manage posts and accounts' },
-    { path: '/calendar', icon: Calendar, label: 'Content Calendar', description: 'Schedule and plan content' },
-    { path: '/analytics', icon: BarChart3, label: 'Analytics', description: 'Performance metrics and reports' },
-    { path: '/collaboration', icon: Users, label: 'Collaboration & Projects', description: 'Team collaboration tools' },
-    { path: '/library', icon: FolderOpen, label: 'Asset Library', description: 'Media and content assets' },
+    { path: '/dashboard', icon: LayoutDashboard, label: t('dashboard'), description: 'Main overview and insights' },
+    { path: '/social', icon: Share2, label: t('social'), description: 'Manage posts and accounts' },
+    { path: '/calendar', icon: Calendar, label: t('calendar'), description: 'Schedule and plan content' },
+    { path: '/analytics', icon: BarChart3, label: t('analytics'), description: 'Performance metrics and reports' },
+    { path: '/collaboration', icon: Users, label: t('collaboration'), description: 'Team collaboration tools' },
+    { path: '/library', icon: FolderOpen, label: t('library'), description: 'Media and content assets' },
   ];
 
   return (
@@ -49,7 +52,7 @@ const Navigation = () => {
                 <span className="text-xs text-neutral-500 leading-none">Social Media Suite</span>
               </div>
             </div>
-            
+
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1" data-testid="desktop-navigation">
               {navItems.map(({ path, icon: Icon, label }) => (
@@ -71,7 +74,7 @@ const Navigation = () => {
                 </Link>
               ))}
             </div>
-            
+
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
               <button
@@ -87,6 +90,11 @@ const Navigation = () => {
                 )}
               </button>
             </div>
+
+            {/* Language Selector */}
+            <div className="hidden lg:flex items-center">
+              <LanguageSelector />
+            </div>
           </div>
         </div>
       </nav>
@@ -99,7 +107,7 @@ const Navigation = () => {
             className="fixed inset-0 bg-black/30 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
           />
-          
+
           {/* Mobile Menu */}
           <div className="fixed top-16 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-neutral-200/60 shadow-xl" data-testid="mobile-navigation">
             <div className="max-h-96 overflow-y-auto">

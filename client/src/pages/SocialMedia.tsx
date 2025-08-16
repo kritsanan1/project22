@@ -52,9 +52,8 @@ const SocialMedia = () => {
     }
   };
 
-  // Assume isConfigured is determined by checking environment variables or API status
-  // For demonstration, let's assume it's true if VITE_AYRSHARE_API_KEY is present
-  const isConfigured = process.env.VITE_AYRSHARE_API_KEY ? true : false;
+  // Check if Ayrshare API is configured
+  const isConfigured = import.meta.env.VITE_AYRSHARE_API_KEY ? true : false;
 
 
   return (

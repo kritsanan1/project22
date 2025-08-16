@@ -2,6 +2,16 @@ import { ayrshareService } from './ayrshareService';
 import { SocialPost, SocialAccount, TrendingTopic, SocialInteraction } from '../types/social';
 
 class SocialMediaService {
+  async testConnection(): Promise<{ success: boolean; message: string }> {
+    try {
+      return await ayrshareService.testConnection();
+    } catch (error) {
+      return {
+        success: false,
+        message: `Connection test failed: ${(error as Error).message}`
+      };
+    }
+  }
   async publishPost(postData: {
     content: string;
     platforms: string[];
@@ -49,12 +59,13 @@ class SocialMediaService {
 
   async getConnectedAccounts(): Promise<SocialAccount[]> {
     try {
-      const accounts = await ayrshareService.getConnectedAccounts();
+      const response = await ayrshareService.getConnectedAccounts();
+      const accounts = response.profiles || [];
       return accounts.map((account: any) => ({
         id: account.id,
         platform: account.platform,
         username: account.username,
-        profileImage: account.profileImage,
+        profileImage: account.profilePicture || account.profileImage,
         isConnected: true,
         lastSync: new Date().toISOString(),
       }));
@@ -133,16 +144,17 @@ class SocialMediaService {
 
   async getPostHistory(): Promise<SocialPost[]> {
     try {
-      const history = await ayrshareService.getPostHistory();
+      const response = await ayrshareService.getPostHistory();
+      const history = response.posts || [];
       return history.map((post: any) => ({
         id: post.id,
         content: post.post,
         platforms: post.platforms,
         publishedAt: post.publishedAt,
         status: post.status,
-        analytics: post.analytics,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
+        analytics: post.engagement,
+        createdAt: post.createdAt || new Date().toISOString(),
+        updatedAt: post.updatedAt || new Date().toISOString(),
       }));
     } catch (error) {
       console.error('Failed to fetch post history:', error);
@@ -157,6 +169,15 @@ class SocialMediaService {
   }
 
   // Mock method for social interactions - would integrate with actual APIs
+  async deletePost(postId: string) {
+    try {
+      return await ayrshareService.deletePost(postId);
+    } catch (error) {
+      console.error('Failed to delete post:', error);
+      throw error;
+    }
+  }
+
   async getSocialInteractions(): Promise<SocialInteraction[]> {
     // This would fetch real interactions from connected platforms
     return [

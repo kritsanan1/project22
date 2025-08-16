@@ -118,10 +118,15 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
         scheduledAt: scheduledAt || undefined,
       };
 
-      await publishPost(postData);
+      // Try to publish via Ayrshare
+      const result = await publishPost(postData);
 
       if (onPostCreated) {
-        onPostCreated(postData);
+        onPostCreated({
+          ...postData,
+          id: result?.id || Date.now().toString(),
+          status: scheduledAt ? 'scheduled' : 'published'
+        });
       }
 
       // Reset form
@@ -132,10 +137,15 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
       setMediaUrls([]);
       setErrors({});
 
-      alert(scheduledAt ? 'Post scheduled successfully!' : 'Post published successfully!');
+      const message = scheduledAt 
+        ? 'Post scheduled successfully via Ayrshare!' 
+        : 'Post published successfully via Ayrshare!';
+      
+      alert(message + (result?.id ? ` Post ID: ${result.id}` : ''));
     } catch (error) {
       console.error('Failed to create post:', error);
-      alert('Failed to create post. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert(`Failed to create post: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
@@ -267,6 +277,63 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
           />
         </div>
 
+        {/* Ayrshare Enhancement Tools */}
+        <div className="border-t border-neutral-200 pt-6">
+          <h4 className="text-sm font-medium text-neutral-700 mb-3">Ayrshare Enhancements</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  // In demo mode, show sample hashtags
+                  const hashtags = '#SocialMedia #ContentMarketing #DigitalMarketing #Engagement #Growth';
+                  setContent(prev => prev + (prev ? ' ' : '') + hashtags);
+                  alert('Auto-generated hashtags added! (Demo mode)');
+                } catch (error) {
+                  console.error('Failed to generate hashtags:', error);
+                }
+              }}
+              className="flex items-center justify-center space-x-2 px-3 py-2 border border-neutral-200 rounded-lg text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-200"
+            >
+              <Hash className="w-4 h-4" />
+              <span>Auto Hashtags</span>
+            </button>
+            
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  // Demo: Add Unsplash image
+                  const mockUrl = 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800';
+                  setMediaUrls(prev => [...prev, mockUrl]);
+                  alert('Unsplash image added! (Demo mode)');
+                } catch (error) {
+                  console.error('Failed to get Unsplash image:', error);
+                }
+              }}
+              className="flex items-center justify-center space-x-2 px-3 py-2 border border-neutral-200 rounded-lg text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-200"
+            >
+              <Image className="w-4 h-4" />
+              <span>Unsplash Image</span>
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => {
+                // Demo: Shorten links
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                const newContent = content.replace(urlRegex, 'https://bit.ly/shortened');
+                setContent(newContent);
+                alert('Links shortened! (Demo mode)');
+              }}
+              className="flex items-center justify-center space-x-2 px-3 py-2 border border-neutral-200 rounded-lg text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors duration-200"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>Shorten Links</span>
+            </button>
+          </div>
+        </div>
+
         {/* Submit Button */}
         <div className="flex items-center justify-end space-x-3">
           <button
@@ -296,8 +363,8 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
               <Send className="w-4 h-4" />
             )}
             <span>
-              {(isLoading || state.isLoading) ? 'Processing...' : 
-               scheduledAt && new Date(scheduledAt).getTime() > Date.now() ? 'Schedule' : 'Publish'}
+              {(isLoading || state.isLoading) ? 'Processing via Ayrshare...' : 
+               scheduledAt && new Date(scheduledAt).getTime() > Date.now() ? 'Schedule via Ayrshare' : 'Publish via Ayrshare'}
             </span>
           </button>
         </div>

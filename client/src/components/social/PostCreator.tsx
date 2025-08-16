@@ -120,7 +120,7 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
       };
 
       // Try to publish via Ayrshare
-      const result = await publishPost(postData);
+      const result: any = await publishPost(postData);
 
       if (onPostCreated) {
         onPostCreated({

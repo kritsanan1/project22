@@ -99,10 +99,9 @@ export const seoTracking = {
     try {
       const { data, error } = await supabase
         .from('page_views')
-        .select('path, title, count(*)')
+        .select('path, title')
         .gte('timestamp', new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString())
-        .group('path, title')
-        .order('count', { ascending: false })
+        .order('timestamp', { ascending: false })
         .limit(10);
 
       if (error) throw error;

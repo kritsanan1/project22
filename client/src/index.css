@@ -34,6 +34,20 @@
 }
 
 @layer components {
+  /* Enhanced shadow utilities */
+  .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+  
+  .shadow-medium {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Transition utilities */
+  .transition-250 {
+    transition-duration: 250ms;
+  }
+  
   /* Mobile navigation improvements */
   .mobile-nav {
     transform: translateX(-100%);

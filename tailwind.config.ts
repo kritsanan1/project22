@@ -11,6 +11,13 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        // Custom ContentFlow color palette
+        sage: '#8B9B7D',
+        'warm-blue': '#6B9BD8',
+        'warm-amber': '#E6B547',
+        'soft-emerald': '#52B788',
+        'dusty-purple': '#9B8AA6',
+        cream: '#FEFCF8',
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

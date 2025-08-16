@@ -24,7 +24,7 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems: NavItem[] = [
-    { path: '/', icon: Home, label: 'Dashboard' },
+    { path: '/dashboard', icon: Home, label: 'Dashboard' },
     { path: '/calendar', icon: Calendar, label: 'Calendar' },
     { path: '/ideation', icon: Lightbulb, label: 'Ideation' },
     { path: '/strategy', icon: Target, label: 'Strategy' },

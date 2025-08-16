@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
-  Send, 
-  Calendar, 
-  Image, 
   X, 
+  Image, 
+  Video, 
+  Calendar, 
+  Hash, 
+  AtSign, 
+  MapPin, 
+  Smile, 
+  Upload,
+  Sparkles,
+  Eye,
+  Send,
+  Save,
+  Clock,
+  Globe,
+  Users,
+  TrendingUp,
+  Zap,
+  Loader2,
   Twitter, 
   Linkedin, 
   Instagram,
-  Facebook,
-  Loader2
+  Facebook
 } from 'lucide-react';
 import { useSocialMedia } from '../../contexts/SocialMediaContext';
 
@@ -73,24 +87,24 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
 
   const validateForm = () => {
     const newErrors: any = {};
-    
+
     if (!content.trim()) {
       newErrors.content = 'Content is required';
     } else if (content.length > 2200) {
       newErrors.content = 'Content too long';
     }
-    
+
     if (platforms.length === 0) {
       newErrors.platforms = 'Select at least one platform';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -105,7 +119,7 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
       };
 
       await publishPost(postData);
-      
+
       if (onPostCreated) {
         onPostCreated(postData);
       }
@@ -117,7 +131,7 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
       setMediaFiles([]);
       setMediaUrls([]);
       setErrors({});
-      
+
       alert(scheduledAt ? 'Post scheduled successfully!' : 'Post published successfully!');
     } catch (error) {
       console.error('Failed to create post:', error);
@@ -130,7 +144,7 @@ const PostCreator: React.FC<PostCreatorProps> = ({ onPostCreated }) => {
   const getCharacterCount = () => {
     const currentContent = content || '';
     const currentPlatforms = platforms || [];
-    
+
     if (currentPlatforms.includes('twitter')) {
       return `${currentContent.length}/280`;
     }

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { SocialPost, SocialAccount, TrendingTopic, SocialInteraction } from '../types/social';
 import { socialMediaService } from '../services/socialMediaService';
+import { ayrshareService } from '../services/ayrshareService';
 
 interface SocialMediaState {
   posts: SocialPost[];
@@ -141,8 +142,18 @@ export function SocialMediaProvider({ children }: { children: React.ReactNode })
   };
 
   const fetchAccounts = async () => {
+    dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      const accounts = await socialMediaService.getConnectedAccounts();
+      const response = await ayrshareService.getConnectedAccounts();
+      const accounts = response.profiles ? response.profiles.map((profile: any) => ({
+        id: profile.id || profile.profileKey,
+        platform: profile.platform || 'unknown',
+        username: profile.username || profile.title,
+        isConnected: profile.status === 'connected' || profile.status === 'demo',
+        profilePicture: profile.profilePicture || 'https://via.placeholder.com/40',
+        status: profile.status || 'demo',
+        stats: profile.stats || { followers: 0, posts: 0, engagement: 0 }
+      })) : [];
       dispatch({ type: 'SET_ACCOUNTS', payload: accounts });
       dispatch({ type: 'SET_ERROR', payload: null });
     } catch (error) {
@@ -151,6 +162,8 @@ export function SocialMediaProvider({ children }: { children: React.ReactNode })
         console.error('Failed to fetch accounts:', error);
       }
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
 
@@ -199,7 +212,7 @@ export function SocialMediaProvider({ children }: { children: React.ReactNode })
   useEffect(() => {
     // Only attempt initial fetch if we have some basic configuration
     const hasApiKey = import.meta.env.VITE_AYRSHARE_API_KEY;
-    
+
     if (hasApiKey) {
       fetchAccounts();
       fetchTrends();

@@ -12,7 +12,12 @@ import {
   Wifi,
   WifiOff,
   Shield,
-  Activity
+  Activity,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Facebook,
+  Plus
 } from 'lucide-react';
 import { useSocialMedia } from '../../contexts/SocialMediaContext';
 import { SocialAccount } from '../../types/social';
@@ -103,6 +108,20 @@ const ConnectedAccounts: React.FC = () => {
     // Navigate to analytics view for this specific platform
     console.log('Viewing analytics for:', account.platform);
     alert('Analytics view coming soon! This will show detailed metrics for your ' + account.platform + ' account.');
+  };
+
+  const handleConnect = (platform: string) => {
+    // Open Ayrshare dashboard for account linking
+    const ayrshareUrl = 'https://app.ayrshare.com/dashboard/social-accounts';
+    window.open(ayrshareUrl, '_blank', 'width=600,height=700');
+    
+    alert(`To connect your ${platform} account:
+
+1. Sign in to your Ayrshare dashboard
+2. Navigate to Social Accounts
+3. Click the ${platform} button
+4. Authorize the connection
+5. Return here and refresh the page`);
   };
 
   return (

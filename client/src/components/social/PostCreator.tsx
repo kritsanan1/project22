@@ -22,7 +22,8 @@ import {
   Twitter, 
   Linkedin, 
   Instagram,
-  Facebook
+  Facebook,
+  ExternalLink
 } from 'lucide-react';
 import { useSocialMedia } from '../../contexts/SocialMediaContext';
 

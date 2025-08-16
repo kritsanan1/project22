@@ -1,6 +1,6 @@
 class AyrshareService {
   private apiKey: string;
-  private baseUrl = 'https://api.ayrshare.com/api';
+  private baseUrl = 'https://app.ayrshare.com/api';
 
   constructor() {
     this.apiKey = import.meta.env.VITE_AYRSHARE_API_KEY || '';

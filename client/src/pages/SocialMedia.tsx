@@ -8,6 +8,8 @@ import SocialAnalytics from '../components/social/SocialAnalytics';
 import ConnectedAccounts from '../components/social/ConnectedAccounts';
 import PostScheduler from '../components/social/PostScheduler';
 import ContentSuggestions from '../components/social/ContentSuggestions';
+import { ConfigurationStatus } from '../components/social/ConfigurationStatus';
+import { ApiConfigurationDashboard } from '../components/social/ApiConfigurationDashboard';
 
 const SocialMedia = () => {
   const { state } = useSocialMedia();
@@ -44,6 +46,11 @@ const SocialMedia = () => {
     }
   };
 
+  // Assume isConfigured is determined by checking environment variables or API status
+  // For demonstration, let's assume it's true if VITE_AYRSHARE_API_KEY is present
+  const isConfigured = process.env.VITE_AYRSHARE_API_KEY ? true : false;
+
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
       <div className="mb-8">
@@ -75,6 +82,15 @@ const SocialMedia = () => {
 
       {/* Tab Content */}
       <div className="min-h-[600px]">
+        {!isConfigured && (
+        <ConfigurationStatus
+          isConfigured={isConfigured}
+          service="Ayrshare"
+          className="mb-6"
+        />
+      )}
+
+      <ApiConfigurationDashboard />
         {renderTabContent()}
       </div>
 

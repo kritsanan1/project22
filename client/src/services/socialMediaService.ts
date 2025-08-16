@@ -96,7 +96,10 @@ class SocialMediaService {
         updatedAt: new Date().toISOString(),
       }));
     } catch (error) {
-      console.error('Failed to fetch trending topics:', error);
+      const errorMessage = (error as Error).message;
+      if (!errorMessage.includes('not configured')) {
+        console.error('Failed to fetch trending topics:', error);
+      }
       return [];
     }
   }

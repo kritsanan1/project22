@@ -1,4 +1,3 @@
-
 # CSM Smart Connect
 
 A modern Customer Success Management (CSM) application with integrated social media management capabilities, built for teams to streamline content creation, scheduling, and analytics.
@@ -45,7 +44,18 @@ cd csm-smart-connect
 npm install
 ```
 
-3. **Environment Configuration:**
+3. **Environment Variables - IMPORTANT SETUP**
+
+⚠️ **Critical**: The application requires proper API configuration to function correctly.
+
+**For Replit Users (Recommended):**
+1. **Access Replit Secrets**: Click on "Secrets" in the left sidebar or visit [Replit Secrets](https://replit.com/~/secrets)
+2. **Add Required Variables**:
+   - Key: `VITE_AYRSHARE_API_KEY`
+   - Value: Your actual Ayrshare API key (get from [ayrshare.com](https://www.ayrshare.com))
+3. **Restart Development Server**: After adding secrets, restart your Repl
+
+**For Local Development:**
 Create a `.env` file in the root directory:
 ```env
 # Database Configuration

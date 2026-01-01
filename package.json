@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "tsx": "^4.20.4"
   }
 }
